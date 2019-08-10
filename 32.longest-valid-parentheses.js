@@ -16,47 +16,31 @@
  * @return {number}
  */
 var longestValidParentheses = function (s) {
-  if (s.length === 0) {
-    return '';
-  }
-  var stack = [], result = [], head = [], x, y, z;
-  for (var i = 0; i < s.length; i++) {
+  var stack = [], result = [], x, len = s.length, max = 0;
+  for (var i = 0; i < len; i++) {
     if (s[i] === ')') {
       if (stack.length) {
-        x = stack.pop(), y = head.pop();
+        x = stack.pop();
         result[x] = i - x + 1;
-        if (y < 0) {
-          y = head.pop();
-        }
-        if (head.length && (z = head.pop()) < 0) {
-          head.push(z);
-          result[ -z - 1 ] = i + z + 2;
-        } else {
-          head.push(z);
-          head.push(-y);
-        }
-      } else {
-        head = [];
       }
     } else {
-      head.push(i + 1);
       stack.push(i);
     }
     result.push(0);
   }
+  result.push(0);
 
-  var max = findMax(result);
-  // return s.substring(max.index, max.index + max.val);
-  return max.val;
-};
-
-function findMax(arr) {
-  var val = arr[0], index = 0;
-  for (var i = 0; i < arr.length; i++) {
-    if (arr[i] > val) {
-      val = arr[i];
-      index = i;
+  for (var i = len - 1; i >= 0; i--) {
+    x = result[i];
+    if (x > 0) {
+      result[i] += result[i + x];
+      x = result[i];
+      if (x > max) {
+        max = x;
+      }
     }
   }
-  return { val, index };
-}
+
+  return max;
+};
+
