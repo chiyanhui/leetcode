@@ -16,31 +16,20 @@
  * @return {number}
  */
 var longestValidParentheses = function (s) {
-  var stack = [], result = [], x, len = s.length, max = 0;
+  var stack = [ -1 ], res = 0, len = s.length;
   for (var i = 0; i < len; i++) {
-    if (s[i] === ')') {
-      if (stack.length) {
-        x = stack.pop();
-        result[x] = i - x + 1;
-      }
-    } else {
+    if (s[i] === '(') {
       stack.push(i);
-    }
-    result.push(0);
-  }
-  result.push(0);
-
-  for (var i = len - 1; i >= 0; i--) {
-    x = result[i];
-    if (x > 0) {
-      result[i] += result[i + x];
-      x = result[i];
-      if (x > max) {
-        max = x;
+    } else {
+      stack.pop();
+      if (stack.length === 0) {
+        stack.push(i);
+      } else {
+        res = Math.max(res, i - stack[stack.length-1]);
       }
     }
   }
 
-  return max;
+  return res;
 };
 
