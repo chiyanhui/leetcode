@@ -1,3 +1,5 @@
+// https://leetcode-cn.com/problems/minimum-number-of-taps-to-open-to-water-a-garden/
+
 function minTaps(n, ranges) {
   if (n === 0) return 0;
   var res = [], x, y, count = 0;
